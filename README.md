@@ -4,9 +4,9 @@ Desenvolvimento do módulo do Bcash Transparente
 
 Desenvolvedores
 ==================
-*Deivison Arthur  -  deivison.arthur@gmail.com
-*Denis Colli Spalenza  -  deniscsz@gmail.com
-*Alex Braga  -  contato@alexbraga.net
+1 - Deivison Arthur  -  deivison.arthur@gmail.com
+2 - Denis Colli Spalenza  -  deniscsz@gmail.com
+3 - Alex Braga  -  contato@alexbraga.net
 
 
 Material para apoio
