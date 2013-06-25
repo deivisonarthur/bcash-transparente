@@ -1,0 +1,325 @@
+<?php
+/**
+ * Módulo Bcash Free
+ *
+ * @category   Payments
+ * @package    DSpalenzaDArthur_Bcash
+ * @license    OSL v3.0
+ * @author	   Denis Spalenza e Deivison Arthur
+ */
+ ?>
+<?php
+    $_code = $this->getMethodCode();
+    //feito para ter compatibilidade com o OneStepCheckout
+    $route = $this->getRequest()->getRequestedRouteName();
+    if($route == 'onestepcheckout') {
+        $fieldCode = '['.$_code.']';
+    }
+    else {
+        $fieldCode = '';
+    }
+    $cls  = new Mage_Core_Model_Design_Package();
+    $path = $cls->getSkinBaseUrl();
+    $contaParcela = 1;
+?>
+
+<script type="text/javascript">
+
+function verifyType(element) {
+    var ccnum = element.value;
+    var visaReg = /^4\d{3}-?\d{4}-?\d{4}-?\d{4}$/;
+    var masterReg = /^5[1-5]\d{2}-?\d{4}-?\d{4}-?\d{4}$/;
+    var discoverReg = /^6011-?\d{4}-?\d{4}-?\d{4}$/;
+    var amexReg = /^3[47]\d{13}$/;
+    var dinersReg = /^3[068]\d{12}$/;
+    
+    if(visaReg.test(ccnum)) {
+        $('opt-visa').checked = true;
+        $('<?php echo $_code ?>_cc_cid').setAttribute('maxlength', 3);
+    } else if(masterReg.test(ccnum)) {
+        $('opt-mastercard').checked = true;
+        $('<?php echo $_code ?>_cc_cid').setAttribute('maxlength', 3);
+    } else if(amexReg.test(ccnum)) {
+        $('opt-amex').checked = true;
+        $('<?php echo $_code ?>_cc_cid').setAttribute('maxlength', 4);
+    } else if(dinersReg.test(ccnum)) {
+        $('opt-diners').checked = true;
+        $('<?php echo $_code ?>_cc_cid').setAttribute('maxlength', 3);
+    } else if(discoverReg.test(ccnum)) {
+        //$('opt-visa').checked=true;
+    }
+    
+    ccnum = ccnum.split("-").join("");
+    
+    var checksum = 0;
+    for (var i=(2-(ccnum.length % 2)); i<=ccnum.length; i+=2) {
+        checksum += parseInt(ccnum.charAt(i-1));
+    }
+    
+    for (var i=(ccnum.length % 2) + 1; i<ccnum.length; i+=2) {
+        var digit = parseInt(ccnum.charAt(i-1)) * 2;
+        if (digit < 10) { checksum += digit; } else { checksum += (digit-9); }
+    }
+    
+    if ((checksum % 10) == 0) {
+        return true;
+    }
+    else {
+        alert('Cartão Inválido');//return false;
+        //$('<?php echo $_code ?>_cc_number').value = "";
+        //$('<?php echo $_code ?>_cc_cid').value = "";
+    }
+}
+
+function onCardChange(optElement) {
+    var meuID = optElement.id;
+    var selCard = optElement.value; 
+    
+    if (selCard == 'diners') {
+        $('<?php echo $_code ?>_cc_number').setAttribute('maxlength', 14);
+        $('<?php echo $_code ?>_cc_cid').setAttribute('maxlength', 3);
+    }
+    else {
+        if (selCard == 'amex') {
+            $('<?php echo $_code ?>_cc_number').setAttribute('maxlength', 15);
+            //$('<?php echo $_code ?>_cc_cid').setAttribute('maxlength', 4);
+        }
+        else {
+            $('<?php echo $_code ?>_cc_number').setAttribute('maxlength', 16);
+            $('<?php echo $_code ?>_cc_cid').setAttribute('maxlength', 3);
+        }
+    }
+
+    $('<?php echo $_code ?>_cc_number').value = "";
+    $('<?php echo $_code ?>_cc_cid').value = "";
+}
+
+function mascara(o,f) {
+    v_obj=o
+    v_fun=f
+    setTimeout("execmascara()",1)
+}
+
+function execmascara() {
+    v_obj.value=v_fun(v_obj.value)
+}
+
+function numeros(v){
+    v=v.replace(/\D/g,"")
+    return v
+}
+
+</script>
+<fieldset class="form-list">
+<?php $_ccType = $this->getInfoData('cc_type') ?>
+<?php $parcela_count = count($this->getParcelas()); //var_dump($this->getParcelas());?>
+<ul id="payment_form_<?php echo $_code ?>" style="display:none;">
+
+    <li id="li-cc">
+    <input onclick="toggleCard();" type="radio" value="cartao" name="forma_pagamento" id="forma-pagamento-cartao"/>
+    <label style="float: none;" for="forma-pagamento-cartao">Cartão de Crédito</label>
+    <ul id="cc" style="display: none;">
+
+        <li  style="display: block">
+            <div class="input-box" style="width: 100%;">
+                
+                <!--div style="width: 99.5%; height: 25px;">
+                <label for="card-logo" class="required"><em>*</em><?php echo $this->__('Selecione sua Bandeira') ?></label>
+                </div-->
+                
+                <ul class="card-logo">
+        		<?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
+        			<li id="li-card-<?php echo $_typeCode ?>" class="seleciona-bandeiras-cards">
+        				<label for="opt-<?php echo $_typeCode ?>"><img src="<?php echo $this->getSkinUrl('images/bcash/'.$_typeCode.'/'. $parcela_count .'x.gif') ?>" /></label>
+                        
+                        <input type="radio" class="radio" name="payment[cc_type]" id="opt-<?php echo $_typeCode ?>" value="<?php echo $_typeCode ?>" onclick="onCardChange(this);"/>
+        			</li>
+        		<?php endforeach; ?>
+        		</ul>
+            </div>
+        </li>
+        <li>
+            <div class="input-box">
+                <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label><br />
+                <input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_owner')) ?>"/>
+            </div>
+        </li>
+        <li>
+            <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label><br />
+            <div class="input-box">
+                <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" onkeyup="mascara(this,numeros)" onfocus="mascara(this,numeros)" onblur="mascara(this,numeros);verifyType(this);" class="input-text required-entry" value="" maxlength="16" />
+            </div>
+        </li>
+        <li id="<?php echo $_code ?>_cc_type_exp_div">
+            <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label><br />
+            <div class="input-box">
+                <div class="v-fix">
+                    <select id="<?php echo $_code ?>_expiration" name="payment[cc_exp_month]" class="month required-entry">
+                    <?php $_ccExpMonth = $this->getInfoData('cc_exp_month') ?>
+                    <?php foreach ($this->getCcMonths() as $k=>$v): ?>
+                        <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpMonth): ?> selected="selected"<?php endif ?>><?php echo $v[0] == 'M' ? $v : substr($v,0,3); ?></option>
+                    <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="v-fix">
+                    <?php $_ccExpYear = $this->getInfoData('cc_exp_year') ?>
+                    <select id="<?php echo $_code ?>_expiration_yr" name="payment[cc_exp_year]" class="year required-entry">
+                    <?php foreach ($this->getCcYears() as $k=>$v): ?>
+                        <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpYear): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
+                    <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
+        </li>
+        <?php echo $this->getChildHtml() ?>
+        <?php if($this->hasVerification()): ?>
+        <li>
+            <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label><br />
+            <div class="input-box">
+                <div class="v-fix">
+                    <input type="text" onkeyup="mascara(this,numeros)" onfocus="mascara(this,numeros)" onblur="mascara(this,numeros)" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry" size="5" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" maxlength="4" />
+                </div>
+                <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
+            </div>
+        </li>
+        <?php endif; ?>
+        <li style="margin-bottom: 20px;">
+            <label for="<?php echo $_code ?>_parcelas"><?php echo $this->__('Parcelas') ?> </label><br />
+            <div class="input-box">
+                <select id="<?php echo $_code ?>_cc_parcelas" name="payment[cc_parcelas]" class="required-entry">
+    		<?php $j=1; foreach($this->getParcelas() as $parcela): ?>
+                    <?php if($j == 1): ?>
+                    <option value="<?php echo $j; ?>"><?php echo 'À vista - '.$this->helper('checkout')->formatPrice($parcela); ?></option>
+                    <?php else: ?>
+    				<option value="<?php echo $j ?>"><?php echo $j.'x - '.$this->helper('checkout')->formatPrice($parcela); ?></option>
+                    <?php endif; ?>
+    		<?php $j+=1; endforeach; ?>
+                </select>
+            </div>
+        </li>
+        
+        <li id="<?php echo $_code ?>_cc_cpftitular_div">
+            <label for="<?php echo $_code ?>_cc_cpftitular" class="required"><em>*</em><?php echo $this->__("TAX/VAT of Card's Owner") ?></label><br />
+            <div class="input-box">
+                <div class="v-fix">
+                    <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cpftitular required-entry" id="<?php echo $_code ?>_cc_cpftitular" name="payment[cc_cpftitular]" value="" maxlength="14" />
+                </div>
+            </div>
+        </li>
+        
+        <li id="<?php echo $_code ?>_cc_phone_div">
+            <label for="<?php echo $_code ?>_cc_phone" class="required"><em>*</em><?php echo $this->__('Telephone') ?></label><br />
+            <div class="input-box">
+                <div class="v-fix">
+                    <input type="text" title="<?php echo $this->__('Telephone') ?>" class="input-text telephone required-entry" id="<?php echo $_code ?>_cc_phone" name="payment[cc_phone]" value="" maxlength="14" />
+                </div>
+            </div>
+        </li>
+        
+        <li id="<?php echo $_code ?>_cc_type_dob_div">
+            <label for="<?php echo $_code ?>_dob" class="required"><em>*</em><?php echo $this->__('Date of Birthday') ?></label><br />
+            <div class="input-box">
+                <div class="v-fix">
+                    <select id="<?php echo $_code ?>_dob" name="payment[cc_dob_day]" class="day required-entry">
+                    <?php for($i=0;$i<=31;$i++): ?>
+                        <option value="<?php echo $i?$i:'' ?>"<?php if($i == 0): ?> selected="selected"<?php endif ?>><?php echo $i == 0 ? 'Dia' : $i; ?></option>    
+                    <?php endfor; ?>
+                    </select>
+                </div>
+                <div class="v-fix">
+                    <select id="<?php echo $_code ?>_dob_mo" name="payment[cc_dob_month]" class="month required-entry">
+                    <?php $_ccExpMonth = $this->getInfoData('cc_exp_month'); ?>
+                    <?php foreach ($this->getCcMonths() as $k=>$v): ?>
+                        <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpMonth): ?> selected="selected"<?php endif ?>><?php echo $v[0] == 'M' ? $v : substr($v,0,3); ?></option>
+                    <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="v-fix">
+                    <select id="<?php echo $_code ?>_dob_yr" name="payment[cc_dob_year]" class="year required-entry">
+                    <?php for($i=((int)date('Y') - 9);$i>((int)date('Y') - 100);$i--): ?>
+                        <option value="<?php echo $i?$i:'' ?>"<?php if($i == ((int)date('Y') - 9)): ?> selected="selected"<?php endif ?>><?php echo $i == ((int)date('Y') - 9) ? 'Ano' : $i; ?></option>    
+                    <?php endfor; ?>
+                    </select>
+                </div>
+            </div>
+        </li>
+    </ul>
+    </li>
+    
+    <li id="li-boleto">
+        <input onclick="toggleBoleto();" type="radio" value="boleto" name="forma_pagamento" id="forma-pagamento-boleto"/>
+        <label style="float: none;" for="forma-pagamento-boleto">Boleto</label>
+        
+        <div id="boleto" style="display: none;">
+            <p>Boleto aqui</p>
+        </div>
+    </li>
+    
+    <li id="li-tef">
+        <input onclick="toggleTef();" type="radio" value="tef_bb" name="forma_pagamento" id="forma-pagamento-tef"/>
+		<label style="float: none;" for="forma-pagamento-tef">Débito Online</label>
+        
+        <div id="tef" style="display: none;">
+            <p>Tef aqui</p>
+        </div>
+    </li>
+    
+    <input title="<?php echo $this->__('Check Forma Pagamento') ?>" name="payment[check_formapagamento]" type="hidden" id="<?php echo $_code ?>_check_formapagamento" value="" />
+    
+</ul>
+</fieldset>
+<script type="text/javascript">
+    
+    function toggleBoleto() {
+    	document.getElementById("<?php echo $_code ?>_check_formapagamento").value = "boleto";
+        
+        var cc =  document.getElementById('cc');
+        if(typeof(cc) != 'undefined' && cc != null) {
+            document.getElementById("cc").style.display="none";
+        }
+        
+        var tef = document.getElementById('tef');
+        if(typeof(tef) != 'undefined' && tef != null) {
+            document.getElementById("tef").style.display="none";
+        }
+        
+        document.getElementById("boleto").style.display="block";
+    }
+ 
+    function toggleCard() {
+        document.getElementById("<?php echo $_code ?>_check_formapagamento").value = "cartao";
+        
+        var tef = document.getElementById('tef');
+        if(typeof(tef) != 'undefined' && tef != null) {
+            document.getElementById("tef").style.display="none";
+        }
+        
+        document.getElementById("boleto").style.display="none";
+        
+        var cc =  document.getElementById('cc');
+        if(typeof(cc) != 'undefined' && cc != null) {
+            document.getElementById("cc").style.display="block";
+        }
+	}
+ 
+    function toggleTef() {
+        document.getElementById("<?php echo $_code ?>_check_formapagamento").value = "tef_bb";
+
+        var cc =  document.getElementById('cc');
+        if(typeof(cc) != 'undefined' && cc != null) {
+            document.getElementById("cc").style.display="none";
+        }
+
+        var tef = document.getElementById('tef');
+        if(typeof(tef) != 'undefined' && tef != null) {
+            document.getElementById("tef").style.display="block";
+        }
+        
+        document.getElementById("boleto").style.display="none";
+    }
+    
+    Event.observe(window, 'load', function() {
+        new MaskedInput('<?php echo $_code ?>_cc_cpftitular', '999.999.999-99');
+        new MaskedInput('<?php echo $_code ?>_cc_phone', '(99)99999999?9');
+    });
+</script>

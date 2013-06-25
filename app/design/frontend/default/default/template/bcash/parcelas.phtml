@@ -1,0 +1,29 @@
+<?php
+/**
+ * Octagono Ecommerce
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.octagonoecommerce.com.br/eula-licenca-usuario-final.html
+ *
+ *
+ * @category   Cielo
+ * @package    Octagono_Cielo
+ * @copyright  Copyright (c) 2009-2011 - Octagono Ecommerce - www.octagonoecommerce.com.br
+ * @license    http://www.octagonoecommerce.com.br/eula-licenca-usuario-final.html
+ */
+ ?>
+
+<style type="text/css">
+#parcelamento {float:left;margin-top:10px;width:100%}
+#parcelamento li {float:left;width:49%;margin-right:1% }
+</style>
+<ul id="parcelamento">
+	<?php foreach($this->getParcelas() as $parcela): ?>
+		<li><?php echo $parcela['label'] ?></li>
+	<?php endforeach ?>
+</ul>
+
