@@ -1,5 +1,5 @@
 <?php
-/**
+/** 
  * Módulo Bcash Free
  *
  * @category   Payments

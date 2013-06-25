@@ -1,6 +1,6 @@
 <?php
 /**
- * Módulo Bcash Free
+ * Módulo Bcash Free 
  *
  * @category   Payments
  * @package    DSpalenzaDArthur_Bcash

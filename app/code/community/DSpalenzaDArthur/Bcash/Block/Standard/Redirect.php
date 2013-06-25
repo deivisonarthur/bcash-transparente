@@ -5,7 +5,7 @@
  * @category   Payments
  * @package    DSpalenzaDArthur_Bcash
  * @license    OSL v3.0
- * @author	   Denis Spalenza e Deivison Arthur
+ * @author	   Denis Spalenza e Deivison Arthur 
  */
 class Xpd_Evolucardgateway_Block_Standard_Redirect extends Mage_Core_Block_Abstract {
     

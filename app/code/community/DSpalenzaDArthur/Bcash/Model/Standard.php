@@ -1,7 +1,7 @@
 <?php
 /**
  * Módulo Bcash Free
- *
+ * 
  * @category   Payments
  * @package    DSpalenzaDArthur_Bcash
  * @license    OSL v3.0

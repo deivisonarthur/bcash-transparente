@@ -7,7 +7,7 @@ $installer->startSetup();
 $installer->addAttribute('order_payment', 'bcash_transaction_id', array());
 $installer->addAttribute('order_payment', 'bcash_field', array());
 
-/*$attribute  = array(
+/*$attribute  = array( 
         'type'          => 'text',
         'backend_type'  => 'text',
         'frontend_input' => 'text',

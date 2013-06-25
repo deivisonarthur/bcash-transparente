@@ -123,4 +123,4 @@ class Xpd_Paybras_Block_Form_Cc extends Mage_Payment_Block_Form_Cc {
 		}
 		return $parcelas;
 	}
-}
+} 

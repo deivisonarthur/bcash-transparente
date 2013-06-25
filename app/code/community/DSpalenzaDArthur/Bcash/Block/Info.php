@@ -1,4 +1,4 @@
-<?php
+<?php  
 /**
  * Módulo Bcash Free
  *
