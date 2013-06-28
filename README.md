@@ -10,6 +10,10 @@ Denis Colli Spalenza  -  deniscsz@gmail.com
 
 Alex Braga  -  contato@alexbraga.net
 
+Isaac Lopes  -  isaac.babu@gmail.com
+
+Felipe Máxima  -  lawsann@gmail.com
+
 
 Material para apoio
 ==================
