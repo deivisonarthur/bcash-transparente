@@ -14,6 +14,8 @@ Isaac Lopes  -  isaac.babu@gmail.com
 
 Felipe Máxima  -  lawsann@gmail.com
 
+Tiago Sampaio  -  tiago@tiagosampaio.com
+
 
 Material para apoio
 ==================
