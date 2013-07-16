@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <config>
     <modules>
-        <DSpalenzaDArthur>
+        <DSpalenzaDArthur_Bcash>
             <active>true</active>
             <codePool>community</codePool>
-        </DSpalenzaDArthur>
+            <depends>
+            	<Mage_Sales />
+            	<Mage_Payment />
+            </depends>
+        </DSpalenzaDArthur_Bcash>
     </modules>
 </config>

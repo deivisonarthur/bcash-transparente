@@ -71,25 +71,9 @@
                         <name>Simulacao</name>
                         <order>60</order>
                     </simulacao>
-                    <!--hiper>
-                        <code>hiper</code>
-                        <name>Hipercard</name>
-                        <order>70</order>
-                    </hiper-->
                 </types>
             </cc>
         </bcash>
-        <!--events>
-            <sales_quote_save_before>
-                <observers>
-                    <dspalenzadarthur_bcash_model_observer>
-                        <type>singleton</type>
-                        <class>DSpalenzaDArthur_Bcash_Model_Observer</class>
-                        <method>updateParcelamento</method>
-                    </dspalenzadarthur_Bcash_model_observer>
-                </observers>
-            </sales_quote_save_before>
-        </events-->
     </global>
     <frontend>
         <translate>
@@ -102,25 +86,25 @@
             </modules>
         </translate>
         <routers>
-            <paybras>
+            <bcash>
                 <use>standard</use>
                 <args>
                     <module>DSpalenzaDArthur_Bcash</module>
                     <frontName>bcash</frontName>
                 </args>
-            </paybras>
+            </bcash>
         </routers>
         <layout>
             <updates>
-                <paybras>
+                <bcash>
                     <file>bcash.xml</file>
-                </paybras>
+                </bcash>
             </updates>
         </layout>
     </frontend>
     <default>
         <payment>
-            <paybras>
+            <bcash>
                 <active>1</active>
                 <model>bcash/standard</model>
                 <title>Bcash</title>
@@ -132,7 +116,7 @@
                 <captura>1</captura>
                 <ativarlabel>1</ativarlabel>
                 <enablevalidate>1</enablevalidate>
-            </paybras>
+            </bcash>
         </payment>
     </default>
 </config>
