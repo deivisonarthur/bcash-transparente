@@ -106,7 +106,7 @@
         <payment>
             <bcash>
                 <active>1</active>
-                <model>bcash/standard</model>
+                <model>bcash/payment_method_standard</model>
                 <title>Bcash</title>
                 <mostrar_parcelamento>1</mostrar_parcelamento>
                 <cctypes>visa,mastercard,elo,amex,diners</cctypes>

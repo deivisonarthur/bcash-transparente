@@ -7,9 +7,11 @@
  * @license    OSL v3.0
  * @author	   Denis Spalenza e Deivison Arthur 
  */
-class Xpd_Evolucardgateway_Block_Standard_Redirect extends Mage_Core_Block_Abstract {
+class DSpalenzaDArthur_Bcash_Block_Standard_Redirect extends Mage_Core_Block_Abstract
+{
     
-    protected function _toHtml() {
+    protected function _toHtml()
+    {
         $session = Mage::getSingleton('checkout/session');
         $html = '<html><body>';
         $html.= $this->__('<center>Processando</center>');

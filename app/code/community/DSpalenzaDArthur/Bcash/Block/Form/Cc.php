@@ -7,26 +7,33 @@
  * @license    OSL v3.0
  * @author	   Denis Spalenza e Deivison Arthur
  */
-class Xpd_Paybras_Block_Form_Cc extends Mage_Payment_Block_Form_Cc {
+class DSpalenzaDArthur_Bcash_Block_Form_Cc extends Mage_Payment_Block_Form_Cc
+{
 
     /**
      * Especifica template.
      */
-    protected function _construct() {
+    protected function _construct()
+    {
         parent::_construct();
         $this->setTemplate('bcash/form/cc.phtml');
     }
 
-	public function getSourceModel() {
+
+
+	public function getSourceModel()
+    {
 		return Mage::getSingleton('bcash/source_cartoes');
     }
+
 
     /**
      * Retorna os tipos de cartões de créditos 
      *
      * @return array
      */
-    public function getCcAvailableTypes() {
+    public function getCcAvailableTypes()
+    {
         $arrayCartoes = $this->getSourceModel()->toOptionArray();
 
         $types = array();
@@ -56,11 +63,12 @@ class Xpd_Paybras_Block_Form_Cc extends Mage_Payment_Block_Form_Cc {
      *
      * @return string
      */
-    public function getMethodFormBlock() {
-        return $this->getLayout()->createBlock('payment/form_cc')
-                        ->setMethod($this->getMethod());
+    public function getMethodFormBlock()
+    {
+        return $this->getLayout()->createBlock('payment/form_cc')->setMethod($this->getMethod());
     }
 	
+
 	public function getProductFinalPrice()
     {
         $price = preg_replace("/^R\\$[ ]*/i", "", $this->getRequest()->getParam('price'));
@@ -91,7 +99,9 @@ class Xpd_Paybras_Block_Form_Cc extends Mage_Payment_Block_Form_Cc {
 
     }
 	
-	public function getParcelas() {
+
+	public function getParcelas()
+    {
 		$max_parcelas = Mage::getStoreConfig('payment/bcash/parcelas');
 		$valor_minimo = Mage::getStoreConfig('payment/bcash/valor_minimo');
 		$parcelas_sem_juros = Mage::getStoreConfig('payment/bcash/parcelas_sem_juros');
@@ -123,4 +133,5 @@ class Xpd_Paybras_Block_Form_Cc extends Mage_Payment_Block_Form_Cc {
 		}
 		return $parcelas;
 	}
+
 } 

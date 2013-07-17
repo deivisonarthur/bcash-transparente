@@ -7,7 +7,8 @@
  * @license    OSL v3.0
  * @author	   Denis Spalenza e Deivison Arthur
  */
-class DSpalenzaDArthur_Bcash_Model_Standard extends Mage_Payment_Model_Method_Abstract {
+class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_Model_Method_Abstract
+{
 
     protected $_code = 'bcash';
     protected $_formBlockType = 'bcash/form_cc';
@@ -24,35 +25,43 @@ class DSpalenzaDArthur_Bcash_Model_Standard extends Mage_Payment_Model_Method_Ab
     public $formaPagamentoProduto;
     public $formaPagamento;
     
+
     /**
      *  Recupera order (pedido) para utilização do módulo
      *
      *  @return	Mage_Sales_Model_Order
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         if ($this->_order == null) {
             $this->_order = Mage::getModel('sales/order')->load(Mage::getSingleton('checkout/session')->getLastOrderId());
         }
+        
         return $this->_order;
     }
     
+
     /**
      * Recupera o código do método de pagamento
      * 
      * @return string
      */
-    public function getCode() {
+    public function getCode()
+    {
         return $this->_code;
     }
     
+
     /**
      * Recupera a forma de pagamento
      * 
      * @return string
      */
-    public function getFormaPagamento() {
+    public function getFormaPagamento()
+    {
         return $this->formaPagamento;
     }
+
 
     /**     
      * Registra log de eventos/erros.
@@ -62,61 +71,63 @@ class DSpalenzaDArthur_Bcash_Model_Standard extends Mage_Payment_Model_Method_Ab
      * @param string $file
      * @param bool $forceLog
      */
-    public function log($message, $level = null, $file = 'bcash.log', $forceLog = false) {
+    public function log($message, $level = null, $file = 'bcash.log', $forceLog = false)
+    {
         Mage::log("Bcash - " . $message, $level, 'bcash.log', $forceLog);
     }
     
+
     /**
      * Redirecionamento para criação da order (pedido)
      *
      * @return string
      */
-    public function getOrderPlaceRedirectUrl() {
+    public function getOrderPlaceRedirectUrl()
+    {
         return Mage::getUrl('bcash/standard/redirect', array('_secure' => true));
     }
     
+
     /**
      * Retorna ambiente da loja
      * 
      * @return int
      */
-    public function getEnvironment() {
+    public function getEnvironment()
+    {
         return Mage::getStoreConfig('payment/bcash/environment');
     }
     
+
     /**
      * Retorna email do recebedor
      * 
      * @return string
      */
-    public function getEmailStore() {
+    public function getEmailStore()
+    {
         return Mage::getStoreConfig('payment/bcash/emailstore');
     }
     
+
     /**
      * Retorna Token de integração
      * 
      * @return string
      */
-    public function getToken() {
+    public function getToken()
+    {
         return Mage::getStoreConfig('payment/bcash/token');
     }
-    
-    /**
-     * Retorna Transação
-     * 
-     * @return string
-     */
-    public function getToken() {
-        return Mage::getStoreConfig('payment/bcash/token');
-    }
+
     
     /**
      * Sobrecarga da função assignData, acrecentado dados adicionais.
      * 
      * @return Mage_Payment_Model_Method_Cc
      */
-    public function assignData($data) {
+    public function assignData($data)
+    {
         $details = array();
         if (!($data instanceof Varien_Object)) {
             $data = new Varien_Object($data);
@@ -137,12 +148,14 @@ class DSpalenzaDArthur_Bcash_Model_Standard extends Mage_Payment_Model_Method_Ab
         return $this;
     }
     
+
     /**
      * Analisa o status e em caso de pagamento aprovado, cria a fatura. No caso do status recusado ou não aprovado, cancela o pedido.
      * 
      * @return integer
      */
-    public function processStatus($order,$status,$transactionId) {
+    public function processStatus($order,$status,$transactionId)
+    {
         if ($status == 4) {
             if ($order->canUnhold()) {
         	    $order->unhold();
@@ -201,11 +214,13 @@ class DSpalenzaDArthur_Bcash_Model_Standard extends Mage_Payment_Model_Method_Ab
         return -1;
     }
     
+
     /**
      * Altera estado de um pedido
      * 
      */
-    public function changeState($order,$cod_state,$status,$comment) {
+    public function changeState($order,$cod_state,$status,$comment)
+    {
         $state = $this->convertState($cod_state);
         $status = $this->convertStatus($cod_state);
 
@@ -214,12 +229,14 @@ class DSpalenzaDArthur_Bcash_Model_Standard extends Mage_Payment_Model_Method_Ab
         $order->save();
     }
     
+
     /**
      * Converte número de estado do pagamento para estado do Magento
      * 
      * @return Mage_Sales_Model_Order
      */
-    public function convertState($num) {
+    public function convertState($num)
+    {
         switch($num) {
             case 1: return Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
             case 2: return Mage_Sales_Model_Order::STATE_HOLDED;
@@ -230,12 +247,14 @@ class DSpalenzaDArthur_Bcash_Model_Standard extends Mage_Payment_Model_Method_Ab
         }
     }
     
+
     /**
      * Converte número de status do meio de pagamento para status do Magento
      * 
      * @return string
      */
-    public function convertStatus($num) {
+    public function convertStatus($num)
+    {
         $num = (int)$num;
         switch($num) {
             case 1: return 'pending_payment';
@@ -247,7 +266,9 @@ class DSpalenzaDArthur_Bcash_Model_Standard extends Mage_Payment_Model_Method_Ab
         }
     }
     
-    public function validate() {
+
+    public function validate()
+    {
     	parent::validate();
         
         $info = $this->getInfoInstance();
