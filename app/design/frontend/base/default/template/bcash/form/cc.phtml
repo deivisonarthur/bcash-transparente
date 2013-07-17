@@ -132,7 +132,7 @@ function numeros(v){
         			<li id="li-card-<?php echo $_typeCode ?>" class="seleciona-bandeiras-cards">
         				<label for="opt-<?php echo $_typeCode ?>"><img src="<?php echo $this->getSkinUrl('images/bcash/'.$_typeCode.'/'. $parcela_count .'x.gif') ?>" /></label>
                         
-                        <input type="radio" class="radio" name="payment[cc_type]" id="opt-<?php echo $_typeCode ?>" value="<?php echo $_typeCode ?>" onclick="onCardChange(this);"/>
+                        <input type="radio" class="radio" name="payment[cc_type]" id="opt-<?php echo $_typeCode ?>" value="<?php echo $_typeCode ?>" onclick="//onCardChange(this);"/>
         			</li>
         		<?php endforeach; ?>
         		</ul>
@@ -141,13 +141,13 @@ function numeros(v){
         <li>
             <div class="input-box">
                 <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label><br />
-                <input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_owner')) ?>"/>
+                <input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="TIAGO O SAMPAIO<?php //echo $this->htmlEscape($this->getInfoData('cc_owner')) ?>"/>
             </div>
         </li>
         <li>
             <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label><br />
             <div class="input-box">
-                <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" onkeyup="mascara(this,numeros)" onfocus="mascara(this,numeros)" onblur="mascara(this,numeros);verifyType(this);" class="input-text required-entry" value="" maxlength="16" />
+                <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" onkeyup="mascara(this,numeros)" onfocus="mascara(this,numeros)" onblur="mascara(this,numeros);verifyType(this);" class="input-text required-entry" value="4111111111111111" maxlength="16" />
             </div>
         </li>
         <li id="<?php echo $_code ?>_cc_type_exp_div">
@@ -177,12 +177,13 @@ function numeros(v){
             <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label><br />
             <div class="input-box">
                 <div class="v-fix">
-                    <input type="text" onkeyup="mascara(this,numeros)" onfocus="mascara(this,numeros)" onblur="mascara(this,numeros)" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry" size="5" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" maxlength="4" />
+                    <input type="text" onkeyup="mascara(this,numeros)" onfocus="mascara(this,numeros)" onblur="mascara(this,numeros)" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry" size="5" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="737" maxlength="4" />
                 </div>
                 <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
             </div>
         </li>
         <?php endif; ?>
+        
         <li style="margin-bottom: 20px;">
             <label for="<?php echo $_code ?>_parcelas"><?php echo $this->__('Parcelas') ?> </label><br />
             <div class="input-box">
@@ -198,6 +199,7 @@ function numeros(v){
             </div>
         </li>
         
+        <!--
         <li id="<?php echo $_code ?>_cc_cpftitular_div">
             <label for="<?php echo $_code ?>_cc_cpftitular" class="required"><em>*</em><?php echo $this->__("TAX/VAT of Card's Owner") ?></label><br />
             <div class="input-box">
@@ -243,6 +245,7 @@ function numeros(v){
                 </div>
             </div>
         </li>
+        -->
     </ul>
     </li>
     

@@ -11,15 +11,31 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
 {
 
     protected $_code = 'bcash';
+    
     protected $_formBlockType = 'bcash/form_cc';
     protected $_infoBlockType = 'bcash/info';
-    protected $_isInitializeNeeded = true;
-    
-    protected $_canUseInternal = true;
-    protected $_canUseForMultishipping = true;
-    protected $_canUseCheckout = true;
-    protected $_order;
-    protected $_ambiente = 1;
+
+    protected $_isInitializeNeeded      = true;
+    protected $_canUseInternal          = true;
+    protected $_canUseForMultishipping  = true;
+    protected $_canUseCheckout          = true;
+    protected $_isGateway               = true;
+    protected $_canOrder                = true;
+
+
+    /**
+     * Holds the order object
+     * 
+     * @var Mage_Sales_Model_Order
+     */
+    protected $_order = null;
+
+    /**
+     * Holds the quote object
+     * 
+     * @var Mage_Sales_Model_Quote
+     */
+    protected $_quote = null;
     
     public $formaPagamentoBandeira;
     public $formaPagamentoProduto;
@@ -39,16 +55,20 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
         
         return $this->_order;
     }
-    
+
 
     /**
-     * Recupera o código do método de pagamento
+     * Gets the quote object
      * 
-     * @return string
+     * @return Mage_Sales_Model_Quote
      */
-    public function getCode()
+    public function getQuote()
     {
-        return $this->_code;
+        if(is_null($this->_quote)) {
+            $this->_quote = Mage::getSingleton('checkout/session')->getQuote();
+        }
+
+        return $this->_quote;
     }
     
 
@@ -84,7 +104,7 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
      */
     public function getOrderPlaceRedirectUrl()
     {
-        return Mage::getUrl('bcash/standard/redirect', array('_secure' => true));
+        //return Mage::getUrl('bcash/standard/redirect', array('_secure' => true));
     }
     
 
@@ -265,7 +285,33 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
             default: return 'pending_payment';
         }
     }
-    
+
+
+    /**
+     * Method that will be executed instead of authorize or capture
+     * if flag isInitializeNeeded set to true
+     *
+     * @param string $paymentAction
+     * @param object $stateObject
+     *
+     * @return Mage_Payment_Model_Abstract
+     */
+    public function initialize($paymentAction, $stateObject)
+    {
+        return $this->$paymentAction();
+    }
+
+
+    public function createTransaction()
+    {
+        Mage::log($this->getQuote()->debug(), null, '$quote.log');
+
+        $data = Mage::getModel('bcash/payment_method_standard_data')->getDataForTransaction($this->getQuote(), $this->getInfoInstance());
+
+        $result = Mage::getModel('bcash/connection')->createTransaction($data);
+
+        Mage::throwException($result);
+    }
 
     public function validate()
     {

@@ -8,41 +8,56 @@
  */
  ?>
 <?php $additionaldata = unserialize($this->getInfo()->getData('additional_data')); ?>
-<?php if($additionaldata["forma_pagamento"] == 'cartao'):?>
-<strong><?php echo $this->getMethod()->getTitle(); ?></strong>
-<p style="margin: 0;"><?php echo $this->__('Name on the Card: %s', $this->htmlEscape($this->getInfo()->getCcOwner())) ?></p>
-<p style="margin: 0;"><?php echo $this->__('Credit Card Type: %s', $this->htmlEscape($this->getCcTypeName())) ?></p>
-<p style="margin: 0;"><?php echo $this->__('Credit Card Number: xxxx-%s', $this->htmlEscape($this->getInfo()->getCcLast4())) ?></p>
-<p style="margin: 0;"><?php echo $this->__('Expiration Date: %s/%s', $this->htmlEscape($this->getInfo()->getCcExpMonth()), $this->htmlEscape($this->getInfo()->getCcExpYear())) ?></p>
-<p style="margin: 0;"><?php echo $this->__('Número de Parcelas: %s', $additionaldata["cc_parcelas"]) ?></p>
-<?php if($this->returnTransaction()): ?>
-<p style="margin: 0;"><?php echo $this->__('Código da transação: %s', $this->returnTransaction()) ?></p>
-<?php endif; ?>
+
+<style type="text/css">
+	.bcash-payment-block p { margin:0; };
+</style>
+
+<div class="bcash-payment-block">
+
+<?php if($additionaldata["forma_pagamento"] == 'cartao'): ?>
+	<strong><?php echo $this->getMethod()->getTitle(); ?></strong>
+
+	<p><?php echo $this->__('Name on the Card: %s', $this->htmlEscape($this->getInfo()->getCcOwner())) ?></p>
+	<p><?php echo $this->__('Credit Card Type: %s', $this->htmlEscape($this->getCcTypeName())) ?></p>
+	<p><?php echo $this->__('Credit Card Number: xxxx-%s', $this->htmlEscape($this->getInfo()->getCcLast4())) ?></p>
+	<p><?php echo $this->__('Expiration Date: %s/%s', $this->htmlEscape($this->getInfo()->getCcExpMonth()), $this->htmlEscape($this->getInfo()->getCcExpYear())) ?></p>
+	<p><?php echo $this->__('Installments: %s', $additionaldata["cc_parcelas"]) ?></p>
+
+	<?php if($this->returnTransaction()): ?>
+	<p><?php echo $this->__('Transaction Code: %s', $this->returnTransaction()) ?></p>
+	<?php endif; ?>
 <?php endif; ?>
 
 <?php if($additionaldata["forma_pagamento"] == 'boleto'): ?>
-<p style="margin: 0;">Boleto Bancário</p>
-<?php if($this->getRequest()->getControllerName() != 'onepage' && $this->getRequest()->getControllerName() != 'onepagecheckout'): ?>
-<?php if($this->returnUrlToRedirect()): ?>
-<p style="margin: 0;"><a href="<?php echo $this->returnUrlToRedirect(); ?>">Segunda via</a></p>
-<?php endif; ?>
-<?php if($this->returnTransaction()): ?>
-<p style="margin: 0;"><?php echo $this->__('Código da transação: %s', $this->returnTransaction()) ?></p>
-<?php endif; ?>
-<?php endif; ?>
+	<strong><?php echo $this->__('Bank Billet')?></strong>
+
+	<?php if($this->getRequest()->getControllerName() != 'onepage' && $this->getRequest()->getControllerName() != 'onepagecheckout'): ?>
+
+		<?php if($this->returnUrlToRedirect()): ?>
+			<p><a href="<?php echo $this->returnUrlToRedirect(); ?>">Segunda via</a></p>
+		<?php endif; ?>
+
+		<?php if($this->returnTransaction()): ?>
+			<p><?php echo $this->__('Transaction Code: %s', $this->returnTransaction()) ?></p>
+		<?php endif; ?>
+
+	<?php endif; ?>
 <?php endif; ?>
 
 <?php if($additionaldata["forma_pagamento"] == 'tef_bb'): ?>
-<p style="margin: 0;">TEF via Banco do Brasil</p>
-<?php if($this->getRequest()->getControllerName() != 'onepage' && $this->getRequest()->getControllerName() != 'onepagecheckout'): ?>
-<?php if($this->returnUrlToRedirect()): ?>
-<p style="margin: 0;"><a href="<?php echo $this->returnUrlToRedirect(); ?>">Link para pagamento</a></p>
-<?php endif; ?>
-<?php if($this->returnTransaction()): ?>
-<p style="margin: 0;"><?php echo $this->__('Código da transação: %s', $this->returnTransaction()) ?></p>
-<?php endif; ?>
-<?php endif; ?>
-<?php endif; ?>
+	<strong><?php echo $this->__('Bank Transfer')?></strong>
+	
+	<?php if($this->getRequest()->getControllerName() != 'onepage' && $this->getRequest()->getControllerName() != 'onepagecheckout'): ?>
 
-<?php //$session = Mage::getSingleton('checkout/session'); ?>
-<?php //$session->unsUrlRedirect(); ?>
+		<?php if($this->returnUrlToRedirect()): ?>
+		<p><a href="<?php echo $this->returnUrlToRedirect(); ?>">Link para pagamento</a></p>
+		<?php endif; ?>
+
+		<?php if($this->returnTransaction()): ?>
+			<p><?php echo $this->__('Transaction Code: %s', $this->returnTransaction()) ?></p>
+		<?php endif; ?>
+
+	<?php endif; ?>
+<?php endif; ?>
+</div>

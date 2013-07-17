@@ -7,7 +7,8 @@
  * @license    OSL v3.0
  * @author	   Denis Spalenza e Deivison Arthur
  */
-class DSpalenzaDArthur_Bcash_Helper_Data extends Mage_Core_Helper_Abstract {
+class DSpalenzaDArthur_Bcash_Helper_Data extends Mage_Core_Helper_Data
+{
     
     /**
      * Converte ID do pedido
@@ -336,6 +337,61 @@ class DSpalenzaDArthur_Bcash_Helper_Data extends Mage_Core_Helper_Abstract {
             default: return 'BRA';
         }
     }
+
+
+    /**
+     * Converts the region (string value) to code like SP
+     * 
+     * @author Tiago Sampaio
+     * 
+     * @param string $regionString
+     * 
+     * @return string
+     */
+    public function getRegionCode($regionString = null)
+    {
+        $matches = array(
+            array('pattern' => '/^acre$/',                              'result' => 'AC'),
+            array('pattern' => '/^alagoas$/',                           'result' => 'AL'),
+            array('pattern' => '/^amap.?$/',                            'result' => 'AP'),
+            array('pattern' => '/^amazona.?$/',                         'result' => 'AM'),
+            array('pattern' => '/^bahia$/',                             'result' => 'BA'),
+            array('pattern' => '/^cear.?$/',                            'result' => 'CE'),
+            array('pattern' => '/^distrito.?federal$/',                 'result' => 'DF'),
+            array('pattern' => '/^esp.?rito.?santo$/',                  'result' => 'ES'),
+            array('pattern' => '/^goi.?s$/',                            'result' => 'GO'),
+            array('pattern' => '/^maranh.?o$/',                         'result' => 'MA'),
+            array('pattern' => '/^mato.?grosso$/',                      'result' => 'MT'),
+            array('pattern' => '/^mato.?grosso.?do.?sul$/',             'result' => 'MS'),
+            array('pattern' => '/^minas.?gerais$/',                     'result' => 'MG'),
+            array('pattern' => '/^par.?$/',                             'result' => 'PA'),
+            array('pattern' => '/^para.?ba$/',                          'result' => 'PB'),
+            array('pattern' => '/^paran.?$/',                           'result' => 'PR'),
+            array('pattern' => '/^pernambuco$/',                        'result' => 'PE'),
+            array('pattern' => '/^piau.?$/',                            'result' => 'PI'),
+            array('pattern' => '/^rio.?de.?janeiro$/',                  'result' => 'RJ'),
+            array('pattern' => '/^rio.?grande.?do.?norte$/',            'result' => 'RN'),
+            array('pattern' => '/^rio.?grande.?do.?sul$/',              'result' => 'RS'),
+            array('pattern' => '/^rond.?nia$/',                         'result' => 'RO'),
+            array('pattern' => '/^roraima$/',                           'result' => 'RR'),
+            array('pattern' => '/^santa.?catarina$/',                   'result' => 'SC'),
+            array('pattern' => '/^s.?o.?paulo$/',                       'result' => 'SP'),
+            array('pattern' => '/^sergipe$/',                           'result' => 'SE'),
+            array('pattern' => '/^tocantins$/',                         'result' => 'TO'),
+        );
+
+        if(($regionString = trim(strtolower($regionString)))) {
+            foreach($matches as $match) {
+                if(preg_match($match['pattern'], $regionString)) {
+                    return strtoupper($match['result']);
+                    break;
+                }
+            }
+        }
+
+        return;
+    }
+
     
     /**
      * Escapa entidades HTML.
@@ -355,6 +411,22 @@ class DSpalenzaDArthur_Bcash_Helper_Data extends Mage_Core_Helper_Abstract {
         } else {
             return $data;
         }
-        
+    }
+
+
+    /**
+     * Removes any char that is not a numeric value in the string
+     * 
+     * @param string $string
+     * 
+     * @return string
+     */
+    public function onlyNumbers($string = null)
+    {
+        if(!is_null($string)) {
+            $string = preg_replace('/[^0-9]/', null, $string);
+        }
+
+        return $string;
     }
 }

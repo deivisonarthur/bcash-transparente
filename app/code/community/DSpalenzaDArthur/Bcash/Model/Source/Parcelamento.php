@@ -9,6 +9,7 @@
  */
 class DSpalenzaDArthur_Bcash_Model_Source_Parcelamento
 {
+    
     public function toOptionArray()
     {
         return array(
@@ -22,5 +23,5 @@ class DSpalenzaDArthur_Bcash_Model_Source_Parcelamento
             ),
         );
     }
-}
 
+}

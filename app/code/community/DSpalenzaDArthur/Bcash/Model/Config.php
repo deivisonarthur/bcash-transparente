@@ -9,6 +9,7 @@
  */
 class DSpalenzaDArthur_Bcash_Model_Config extends Mage_Payment_Model_Config
 {
+    
     /**
      * Retrieve array of credit card types
      *
@@ -26,4 +27,5 @@ class DSpalenzaDArthur_Bcash_Model_Config extends Mage_Payment_Model_Config
         }
         return $types;
     }
+
 }

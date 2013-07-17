@@ -20,10 +20,14 @@ class DSpalenzaDArthur_Bcash_Block_Form_Cc extends Mage_Payment_Block_Form_Cc
     }
 
 
-
+    /**
+     * Gets the source model for credit cards
+     * 
+     * @return DSpalenzaDArthur_Bcash_Model_Source_Cartoes
+     */
 	public function getSourceModel()
     {
-		return Mage::getSingleton('bcash/source_cartoes');
+		return Mage::getSingleton('bcash/system_config_source_cctype');
     }
 
 
@@ -37,6 +41,7 @@ class DSpalenzaDArthur_Bcash_Block_Form_Cc extends Mage_Payment_Block_Form_Cc
         $arrayCartoes = $this->getSourceModel()->toOptionArray();
 
         $types = array();
+
         foreach($arrayCartoes as $cartao) {
             $types[$cartao['value']] = $cartao['label'];
         }

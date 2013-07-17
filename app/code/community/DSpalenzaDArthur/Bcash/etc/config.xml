@@ -2,7 +2,7 @@
 <config>
     <modules>
         <DSpalenzaDArthur_Bcash>
-            <version>1.0.0</version>
+            <version>0.1.0.0</version>
         </DSpalenzaDArthur_Bcash>
     </modules>
     <global>
@@ -102,11 +102,23 @@
             </updates>
         </layout>
     </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <DSpalenzaDArthur_Bcash>
+                    <files>
+                        <default>DSpalenzaDArthur_Bcash.csv</default>
+                    </files>
+                </DSpalenzaDArthur_Bcash>
+            </modules>
+        </translate>
+    </adminhtml>
     <default>
         <payment>
             <bcash>
                 <active>1</active>
                 <model>bcash/payment_method_standard</model>
+                <payment_action>createTransaction</payment_action>
                 <title>Bcash</title>
                 <mostrar_parcelamento>1</mostrar_parcelamento>
                 <cctypes>visa,mastercard,elo,amex,diners</cctypes>
@@ -116,6 +128,9 @@
                 <captura>1</captura>
                 <ativarlabel>1</ativarlabel>
                 <enablevalidate>1</enablevalidate>
+                <transaction_url>https://api.bcash.com.br/service/createTransaction/</transaction_url>
+                <transaction_url_type>json</transaction_url_type>
+                <debug>1</debug>
             </bcash>
         </payment>
     </default>

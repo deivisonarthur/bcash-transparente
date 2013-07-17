@@ -30,6 +30,7 @@ class DSpalenzaDArthur_Bcash_Block_Info extends Mage_Payment_Block_Info_Ccsave
 //        return $transport;
 //    }
 
+
 	/**
      * Recebe instancia corrente de order
      *
@@ -46,28 +47,31 @@ class DSpalenzaDArthur_Bcash_Block_Info extends Mage_Payment_Block_Info_Ccsave
 		}
         
         if(!$order) {
-            $paybras = Mage::getSingleton('paybras/standard');
-            $order = $paybras->getOrder(); 
+            $bcash = Mage::getSingleton('bcash/payment_method_standard');
+            $order = $bcash->getOrder();
         }
 
 		return $order;
     }
     
+
     /**
      * Recupera ID da transação junto a Paybras
      * 
      * @return string
      */
-    public function returnTransaction() {
+    public function returnTransaction()
+    {
         $order = $this->getOrder();
-        if(isset($order)) {
+
+        if(isset($order) && $order->getId()) {
             return $order->getPayment()->getPaybrasTransactionId() ? $order->getPayment()->getPaybrasTransactionId() : $this->getInfo()->getPaybrasTransactionId();
-        }
-        else {
-            return NULL;
+        } else {
+            return null;
         }
     }
     
+
     /**
      * Recupera URL de destino para redirect
      *  
@@ -75,18 +79,19 @@ class DSpalenzaDArthur_Bcash_Block_Info extends Mage_Payment_Block_Info_Ccsave
      */
     public function returnUrlToRedirect() {
         $order = $this->getOrder();
+
         if(Mage::getSingleton('checkout/session')->getUrlRedirect()) {
             return Mage::getSingleton('checkout/session')->getUrlRedirect();
         } elseif(isset($order)) {
             $payment = $order->getPayment();
             //Mage::log('URL DO PAYMENT: ' . $payment->getPaybrasTransactionId());
             return $payment->getPaybrasOrderId();
-        }
-        else {
+        } else {
             return NULL;
         }
     }
     
+
     /**
      * Gera informações do pagamento para admin.
      */
@@ -122,5 +127,5 @@ class DSpalenzaDArthur_Bcash_Block_Info extends Mage_Payment_Block_Info_Ccsave
             'payment_method' => $paymentMethod,
         ));
     }
-}
 
+}

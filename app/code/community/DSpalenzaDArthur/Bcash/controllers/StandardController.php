@@ -7,13 +7,15 @@
  * @license    OSL v3.0
  * @author	   Denis Spalenza e Deivison Arthur
  */
-class DSpalenzaDArthur_Bcash_StandardController extends Mage_Core_Controller_Front_Action {
+class DSpalenzaDArthur_Bcash_StandardController extends Mage_Core_Controller_Front_Action
+{
 
     /**
      * Header de Sessão Expirada
      *
      */
-    protected function _expireAjax() {
+    protected function _expireAjax()
+    {
         if (!Mage::getSingleton('checkout/session')->getQuote()->hasItems()) {
             $this->getResponse()->setHeader('HTTP/1.1', '403 Session Expired');
             exit;
@@ -25,7 +27,8 @@ class DSpalenzaDArthur_Bcash_StandardController extends Mage_Core_Controller_Fro
      *
      * @return Xpd_Paybras_Model_Standard
      */
-    public function getStandard() {
+    public function getStandard()
+    {
         return Mage::getSingleton('bcash/standard');
     }
     
@@ -33,7 +36,8 @@ class DSpalenzaDArthur_Bcash_StandardController extends Mage_Core_Controller_Fro
      * Processa pagamento - cria transação via WebService 
      * 
      */
-    protected function redirectAction() {
+    protected function redirectAction()
+    {
         
     }
     
@@ -41,7 +45,9 @@ class DSpalenzaDArthur_Bcash_StandardController extends Mage_Core_Controller_Fro
      * Captura Notificação do Pagamento
      * 
      */
-    public function capturaAction() { //Código reaproveitado, deverá ser modificado.
+    public function capturaAction()
+    { 
+        //Código reaproveitado, deverá ser modificado.
         if($this->getRequest()->isPost() && Mage::getStoreConfig('payment/bcash/notification')) {
             $bcash = $this->getStandard();
             $bcash->log($json);
