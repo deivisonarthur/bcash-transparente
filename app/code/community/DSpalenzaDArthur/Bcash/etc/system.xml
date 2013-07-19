@@ -27,11 +27,35 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </title>
+                        <seller_email translate="label">
+                            <label>Seller Email</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </seller_email>
+                        <token translate="label">
+                            <label>Integration Token</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </token>
+                        <consumer_key translate="label">
+                            <label>API Consumer Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </consumer_key>
                         <cctypes translate="label">
                             <label>Credit Cards Accepted</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>bcash/system_config_source_cctype</source_model>
-                            <sort_order>30</sort_order>
+                            <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -41,32 +65,16 @@
                             <label>Ambiente</label>
                             <frontend_type>select</frontend_type>
                             <source_model>bcash/system_config_source_environment</source_model>
-                            <sort_order>40</sort_order>
+                            <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </environment>
-                        <token translate="label">
-                            <label>Integration Token</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </token>
-                        <emailstore translate="label">
-                            <label>Recipient Email</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </emailstore>
                         <notification translate="label">
                             <label>Enable Receipt of Notifications</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>70</sort_order>
+                            <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -75,7 +83,7 @@
                             <label>Enable Installments</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>80</sort_order>
+                            <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -84,7 +92,7 @@
                             <label>Enable Prototype Validation for Fields</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>90</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -93,7 +101,7 @@
                             <label>Reduce Form for Customized Checkout</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>100</sort_order>
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -101,7 +109,7 @@
                         <error_message_prefix translate="label">
                             <label>Error Message Prefix</label>
                             <frontend_type>textarea</frontend_type>
-                            <sort_order>110</sort_order>
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -109,7 +117,7 @@
                         <error_message_sufix translate="label">
                             <label>Error Message Sufix</label>
                             <frontend_type>textarea</frontend_type>
-                            <sort_order>120</sort_order>
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -118,11 +126,32 @@
                             <label>Transaction URL Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>bcash/system_config_source_url_type</source_model>
-                            <sort_order>130</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </transaction_url_type>
+                        <checkout_stop_processing translate="label,comment">
+                            <label>Stop Checkout Order When the Transaction is Canceled by BCash!</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>When the customer is checking out an order and BCash cancels it for any reason, this option avoid the order to be placed and keeps the customer in the checkout.</comment>
+                        </checkout_stop_processing>
+                        <checkout_stop_processing_message translate="label">
+                            <label>Message to be Shown to Customer</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <checkout_stop_processing>1</checkout_stop_processing>
+                            </depends>
+                        </checkout_stop_processing_message>
                     </fields>
                 </bcash>
             </groups>

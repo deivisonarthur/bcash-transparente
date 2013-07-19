@@ -98,15 +98,15 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
     
 
     /**
-     * Redirecionamento para criação da order (pedido)
-     *
-     * @return string
+     * Gets the module helper instance
+     * 
+     * @return DSpalenzaDArthur_Bcash_Helper_Data
      */
-    public function getOrderPlaceRedirectUrl()
+    protected function _helper()
     {
-        //return Mage::getUrl('bcash/standard/redirect', array('_secure' => true));
+        return Mage::helper('bcash');
     }
-    
+
 
     /**
      * Retorna ambiente da loja
@@ -116,28 +116,6 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
     public function getEnvironment()
     {
         return Mage::getStoreConfig('payment/bcash/environment');
-    }
-    
-
-    /**
-     * Retorna email do recebedor
-     * 
-     * @return string
-     */
-    public function getEmailStore()
-    {
-        return Mage::getStoreConfig('payment/bcash/emailstore');
-    }
-    
-
-    /**
-     * Retorna Token de integração
-     * 
-     * @return string
-     */
-    public function getToken()
-    {
-        return Mage::getStoreConfig('payment/bcash/token');
     }
 
     
@@ -304,14 +282,30 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
 
     public function createTransaction()
     {
-        Mage::log($this->getQuote()->debug(), null, '$quote.log');
-
         $data = Mage::getModel('bcash/payment_method_standard_data')->getDataForTransaction($this->getQuote(), $this->getInfoInstance());
-
         $result = Mage::getModel('bcash/connection')->createTransaction($data);
+        
+        $payment = $this->getQuote()->getPayment();
+        $payment->setAdditionalInformation(get_object_vars($result));
+        $payment->save();
 
-        Mage::throwException($result);
+        Mage::log($result, null, '$result.log');
+
+        if($result->status == '7') {
+            if($this->_helper()->getConfigFlag('checkout_stop_processing')) {
+                $message = $this->_helper()->getConfigFlag('checkout_stop_processing_message');
+
+                if(!$message) {
+                    $message = $this->_helper()->__('Your payment was refused. Please try again selecting another payment method.');
+                }
+
+                Mage::throwException($message);
+            }
+        }
+
+        Mage::throwException($result->descriptionStatus  . ' - ' . $result->message);
     }
+
 
     public function validate()
     {
@@ -335,55 +329,6 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
     		Mage::throwException($errorMsg);
     	}
         
-        /*
-    	if($formapagamento=="cartaodecredito") {
-    		if(empty($cartaobandeira) || empty($nome) || empty($cpf) || empty($numerocartao) || empty($codseguranca)) {
-                $errorCode = 'invalid_data';
-                $errorMsg = $this->_getHelper()->__('Campos de preenchimento obrigatório');
-    
-                if(! $this->isCpfValid($cpf)) {
-                    $errorCode = 'invalid_data';
-                    $errorMsg = $this->_getHelper()->__('CPF inválido.');
-
-                    #gera uma exception caso nenhuma forma de pagamento seja selecionada
-                    Mage::throwException($errorMsg);
-                }
-
-                $validCartao = $this->validaNumeroDoCartao($numerocartao, $codseguranca, $cartaobandeira);
-                
-                if(! $validCartao) {
-                    $errorCode = 'invalid_data';
-                    $errorMsg = $this->_getHelper()->__('Cartão inválido. Revise os dados informados e tente novamente.');
-
-                    #gera uma exception caso nenhuma forma de pagamento seja selecionada
-                    Mage::throwException($errorMsg);
-                }
-
-                $validadataCartao = $this->validaDataCartaoDeCredito($expiracaomes, $expiracaoano);
-                
-                if(! $validadataCartao) {
-                    $errorCode = 'invalid_data';
-                    $errorMsg = $this->_getHelper()->__('Cartão vencido. Revise os dados de expiracao e envie novamente.');
-
-                    #gera uma exception caso nenhuma forma de pagamento seja selecionada
-                    Mage::throwException($errorMsg);
-                }
-
-                #gera uma exception caso os campos do cartão nao forem preenchidos
-                Mage::throwException($errorMsg);
-            }
-    	}
-    
-    	if($formapagamento === "tef") {
-            if(empty($tefbandeira)){
-                $errorCode = 'invalid_data';
-                $errorMsg = $this->_getHelper()->__('Escolha o banco pelo qual deseja realizar a tranferẽncia eletrônica (TEF)');
-    		
-                #gera uma exception caso os campos de tef não forem preenchidos
-                Mage::throwException($errorMsg);
-    		}
-    	}
-   	    */
     	return $this;
     }
     

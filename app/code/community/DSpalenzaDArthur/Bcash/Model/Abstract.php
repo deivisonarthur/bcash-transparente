@@ -49,7 +49,7 @@ abstract class DSpalenzaDArthur_Bcash_Model_Abstract extends Mage_Core_Model_Abs
     protected function _getConfig($field = null)
     {
     	if(!is_null($field)) {
-    		return Mage::getStoreConfig('payment/bcash/'.$field);
+    		return $this->_helper()->getConfig($field);
     	}
 
     	return;

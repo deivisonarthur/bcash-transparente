@@ -39,9 +39,9 @@ class DSpalenzaDArthur_Bcash_Model_Credentials extends DSpalenzaDArthur_Bcash_Mo
 
 	protected function _construct()
 	{
-		$this->_consumerKey 	= '1f5c18f0e65699f2568ca2751654fa7fc5ce94b0';
-		$this->_token 			= 'lojamodelo@pagamentodigital.com.br';
-		$this->_sellerEmail 	= '2948208E715B986F25A5E';
+		$this->_consumerKey 	= $this->_getConfig('consumer_key');
+		$this->_token 			= $this->_getConfig('token');
+		$this->_sellerEmail 	= $this->_getConfig('seller_email');
 
 		$data = array(
 			'consumer_key' 	=> $this->_consumerKey,
@@ -50,6 +50,8 @@ class DSpalenzaDArthur_Bcash_Model_Credentials extends DSpalenzaDArthur_Bcash_Mo
 		);
 
 		$this->setData($data);
+
+		Mage::log($this->debug(), null, '$credentials.log');
 	}
 
 

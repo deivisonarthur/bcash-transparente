@@ -265,7 +265,7 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard_Data extends DSpalenz
      */
     protected function _prepareSellerMail()
     {
-    	$this->_data['sellerMail'] = 'lojamodelo@pagamentodigital.com.br';
+    	$this->_data['sellerMail'] = $this->_getConfig('seller_email');
 
     	return $this;
     }

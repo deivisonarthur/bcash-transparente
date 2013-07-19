@@ -44,7 +44,7 @@
                     <visa>
                         <code>visa</code>
                         <name>Visa</name>
-                        <order>0</order>
+                        <order>10</order>
                     </visa>
                     <mastercard>
                         <code>mastercard</code>
@@ -130,6 +130,7 @@
                 <enablevalidate>1</enablevalidate>
                 <transaction_url>https://api.bcash.com.br/service/createTransaction/</transaction_url>
                 <transaction_url_type>json</transaction_url_type>
+                <checkout_stop_processing>0</checkout_stop_processing>
                 <debug>1</debug>
             </bcash>
         </payment>

@@ -30,13 +30,114 @@ class DSpalenzaDArthur_Bcash_Model_Connection extends DSpalenzaDArthur_Bcash_Mod
 	const ERROR_MESSAGE_PREFIX 	= 'Some error has occurred when trying to place your order.';
 	const ERROR_MESSAGE_SUFIX	= 'Please correct any information if needed and try again or contact us for help.';
 
+
+	/**
+	 * Available Transaction Responses
+	 */
+
+	/**
+	 * BCash: Informação processada com sucesso
+	 */
+	const RESULT_HTTP_CODE_SUCCESS = '200';
+
+	/**
+	 * BCash: Requisição com parâmetros obrigatórios vazios ou inválidos
+	 */
+	const RESULT_HTTP_CODE_INVALID = '400';
+
+	/**
+	 * BCash: Falha na autenticação ou sem acesso para usar o serviço
+	 */
+	const RESULT_HTTP_CODE_AUTHFAIL = '401';
+
+	/**
+	 * BCash: Método não permitido, o serviço suporta apenas POST
+	 */
+	const RESULT_HTTP_CODE_UNSUPPORTED_METHOD = '405';
+
+	/**
+	 * BCash: Content-Type não suportado
+	 */
+	const RESULT_HTTP_CODE_UNSUPPORTED_CONTENT_TYPE = '415';
+
+	/**
+	 * BCash: Erro fatal na aplicação, executar a solicitação mais tarde
+	 */
+	const RESULT_HTTP_CODE_ERROR = '500';
+
+	/**
+	 * BCash: Serviço está indisponível
+	 */
+	const RESULT_HTTP_CODE_UNAVAILABLE = '503';
+	
+
+	/**
+	 * Available Transaction Statuses
+	 */
+
+	/**
+	 * BCash: “Em andamento” = Aguardando a confirmação de pagamento
+	 */
+	const TRANSACTION_STATUS_PENDING 	= '1';	
+
+	/**
+	 * BCash: “Em andamento” = Aguardando aprovação de risco
+	 */
+	const TRANSACTION_STATUS_PROCESSING = '2';
+
+	/**
+	 * BCash: “Aprovada” = Transação aprovada
+	 */
+	const TRANSACTION_STATUS_APPROVED 	= '3';
+
+	/**
+	 * BCash: “Concluído” = Transação concluída
+	 */
+	const TRANSACTION_STATUS_FINISHED 	= '4';
+
+	/**
+	 * BCash: “Cancelada” = Transação cancelada
+	 */
+	const TRANSACTION_STATUS_CANCELED 	= '5';
+
+
+
 	/**
 	 * Creates the transaction
 	 * 
 	 * @param array $data
 	 * - It must be in json encoded format already
+	 * 
+	 * @return string | array
 	 */
 	public function createTransaction($data = array())
+	{
+		$result = $this->_makeRequest($data);
+
+		if($result->getHttpCode() != self::RESULT_HTTP_CODE_SUCCESS) {
+			Mage::throwException($this->_getBeautifiedErrorMessage($result->getContent()));
+		} else {
+			/**
+			 * If the result of HTTP Code is 200 then the transaction was sucessfully created and the result has informations like
+			 * transaction id, order number and transaction status.
+			 */
+			$data = json_decode(urldecode($result->getContent()));
+			
+			return($data);
+		}
+	}
+
+
+	/**
+	 * Makes the real request for creating the transaction
+	 * 
+	 * @author Tiago Sampaio
+	 * 
+	 * @param array $data
+	 * 
+	 * @return Varien_Object
+	 */
+	protected function _makeRequest($data = array())
 	{
 		$oAuth = $this->_grantAccess();
 
@@ -55,27 +156,29 @@ class DSpalenzaDArthur_Bcash_Model_Connection extends DSpalenzaDArthur_Bcash_Mod
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params, '', '&'));
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $oAuth);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE ); /* Se seu domínio possuir SSL, remover esta linha de código */
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE ); /* Se seu domínio possuir SSL, remover esta linha de código */
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE ); /* If your domain is SSL, remove this line */
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE ); /* If your domain is SSL, remove this line */
 		curl_exec($ch);
 
-		/* XML ou Json retornado pelo Bcash */
+		/**
+		 * XML ou Json returned by BCash!
+		 */
 		$body = ob_get_contents();
 		ob_end_clean();
 
-		/* Obtendo httpCode para verificar erros ou successo */
+		/**
+		 * Get httpCode for error or success verification
+		 */
 		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-		if($httpCode != '200') {
-			return $this->_getBeautifiedErrorMessage($body);
-		} else {
-			/* Se httpCode é igual a 200, houve sucesso ao criar uma nova transação e a variável $body contém o número da transação (gerado pelo Bcash), número do pedido (enviado pela loja virtual) e o status desta transação */
-			$temp = json_decode($body);
+		$data = array(
+			'http_code' => $httpCode,
+			'content' 	=> $body
+		);
 
-			//$order[0]->STATUS			  	 = urldecode($temp->{'status'});
-			//$order[0]->STATUS_DESCRIPTION	 = urldecode($temp->{'descriptionStatus'});
-			return("Creating Transaction - Success! : ".urldecode($body));
-		}
+		$result = new Varien_Object($data);
+
+		return $result;
 	}
 
 
@@ -128,7 +231,7 @@ class DSpalenzaDArthur_Bcash_Model_Connection extends DSpalenzaDArthur_Bcash_Mod
 	 */
 	protected function _grantAccess()
 	{
-		$time 	     = time()*1000;
+		$time = time()*1000;
 		
 		$signature = array(
 			'oauth_consumer_key' 		=> $this->_getCredentials()->getConsumerKey(),

@@ -351,35 +351,35 @@ class DSpalenzaDArthur_Bcash_Helper_Data extends Mage_Core_Helper_Data
     public function getRegionCode($regionString = null)
     {
         $matches = array(
-            array('pattern' => '/^acre$/',                              'result' => 'AC'),
-            array('pattern' => '/^alagoas$/',                           'result' => 'AL'),
-            array('pattern' => '/^amap.?$/',                            'result' => 'AP'),
-            array('pattern' => '/^amazona.?$/',                         'result' => 'AM'),
-            array('pattern' => '/^bahia$/',                             'result' => 'BA'),
-            array('pattern' => '/^cear.?$/',                            'result' => 'CE'),
-            array('pattern' => '/^distrito.?federal$/',                 'result' => 'DF'),
-            array('pattern' => '/^esp.?rito.?santo$/',                  'result' => 'ES'),
-            array('pattern' => '/^goi.?s$/',                            'result' => 'GO'),
-            array('pattern' => '/^maranh.?o$/',                         'result' => 'MA'),
-            array('pattern' => '/^mato.?grosso$/',                      'result' => 'MT'),
-            array('pattern' => '/^mato.?grosso.?do.?sul$/',             'result' => 'MS'),
-            array('pattern' => '/^minas.?gerais$/',                     'result' => 'MG'),
-            array('pattern' => '/^par.?$/',                             'result' => 'PA'),
-            array('pattern' => '/^para.?ba$/',                          'result' => 'PB'),
-            array('pattern' => '/^paran.?$/',                           'result' => 'PR'),
-            array('pattern' => '/^pernambuco$/',                        'result' => 'PE'),
-            array('pattern' => '/^piau.?$/',                            'result' => 'PI'),
-            array('pattern' => '/^rio.?de.?janeiro$/',                  'result' => 'RJ'),
-            array('pattern' => '/^rio.?grande.?do.?norte$/',            'result' => 'RN'),
-            array('pattern' => '/^rio.?grande.?do.?sul$/',              'result' => 'RS'),
-            array('pattern' => '/^rond.?nia$/',                         'result' => 'RO'),
-            array('pattern' => '/^roraima$/',                           'result' => 'RR'),
-            array('pattern' => '/^santa.?catarina$/',                   'result' => 'SC'),
-            array('pattern' => '/^s.?o.?paulo$/',                       'result' => 'SP'),
-            array('pattern' => '/^sergipe$/',                           'result' => 'SE'),
-            array('pattern' => '/^tocantins$/',                         'result' => 'TO'),
+            array('pattern' => '/^(a|A)cre$/',                              'result' => 'AC'),
+            array('pattern' => '/^(a|A)lagoas$/',                           'result' => 'AL'),
+            array('pattern' => '/^(a|A)map.?$/',                            'result' => 'AP'),
+            array('pattern' => '/^(a|A)mazona.?$/',                         'result' => 'AM'),
+            array('pattern' => '/^(b|B)ahia$/',                             'result' => 'BA'),
+            array('pattern' => '/^(c|C)ear.*$/',                            'result' => 'CE'),
+            array('pattern' => '/^(d|D)istrito.?(f|F)ederal$/',             'result' => 'DF'),
+            array('pattern' => '/^(e|E)sp.*rito.?(s|S)anto$/',              'result' => 'ES'),
+            array('pattern' => '/^(g|G)oi.*s$/',                            'result' => 'GO'),
+            array('pattern' => '/^(m|M)aranh.*o$/',                         'result' => 'MA'),
+            array('pattern' => '/^(m|M)ato.?(g|G)rosso$/',                  'result' => 'MT'),
+            array('pattern' => '/^(m|M)ato.?(g|G)rosso.?do.?(s|S)ul$/',     'result' => 'MS'),
+            array('pattern' => '/^(m|M)inas.?(g|G)erais$/',                 'result' => 'MG'),
+            array('pattern' => '/^(p|P)ar.*$/',                             'result' => 'PA'),
+            array('pattern' => '/^(p|P)ara.*ba$/',                          'result' => 'PB'),
+            array('pattern' => '/^(p|P)aran.*$/',                           'result' => 'PR'),
+            array('pattern' => '/^(p|P)ernambuco$/',                        'result' => 'PE'),
+            array('pattern' => '/^(p|P)iau.*$/',                            'result' => 'PI'),
+            array('pattern' => '/^(r|R)io.?de.?(j|J)aneiro$/',              'result' => 'RJ'),
+            array('pattern' => '/^(r|R)io.?(g|G)rande.?do.?(n|N)orte$/',    'result' => 'RN'),
+            array('pattern' => '/^(r|R)io.?(g|G)rande.?do.?(s|S)ul$/',      'result' => 'RS'),
+            array('pattern' => '/^(r|R)ond.*nia$/',                         'result' => 'RO'),
+            array('pattern' => '/^(r|R)oraima$/',                           'result' => 'RR'),
+            array('pattern' => '/^(s|S)anta.?(c|C)atarina$/',               'result' => 'SC'),
+            array('pattern' => '/^(s|S).*o.(p|P)aulo$/',                    'result' => 'SP'),
+            array('pattern' => '/^(s|S)ergipe$/',                           'result' => 'SE'),
+            array('pattern' => '/^(t|T)ocantins$/',                         'result' => 'TO'),
         );
-
+        
         if(($regionString = trim(strtolower($regionString)))) {
             foreach($matches as $match) {
                 if(preg_match($match['pattern'], $regionString)) {
@@ -387,6 +387,40 @@ class DSpalenzaDArthur_Bcash_Helper_Data extends Mage_Core_Helper_Data
                     break;
                 }
             }
+        }
+
+        return;
+    }
+
+
+    /**
+     * Get any configuration of the module
+     * 
+     * @param string $field
+     * 
+     * @return string
+     */
+    public function getConfig($field = null)
+    {
+        if(!is_null($field)) {
+            return Mage::getStoreConfig('payment/bcash/'.$field);
+        }
+
+        return;
+    }
+
+
+    /**
+     * Get any configuration flag of the module
+     * 
+     * @param string $field
+     * 
+     * @return string
+     */
+    public function getConfigFlag($field = null)
+    {
+        if(!is_null($field)) {
+            return Mage::getStoreConfigFlag('payment/bcash/'.$field);
         }
 
         return;

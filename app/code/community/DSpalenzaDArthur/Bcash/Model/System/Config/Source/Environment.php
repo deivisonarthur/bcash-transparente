@@ -17,10 +17,15 @@ class DSpalenzaDArthur_Bcash_Model_System_Config_Source_Environment
     public function toOptionArray()
     {
         return array(
+            /**
+             * The Sandbox environment is not ready for tests
+             * Need to use Production mode
+             * 
             array(
                 'value' => self::ENVIROMENT_MODE_SANDBOX,
                 'label' => Mage::helper('bcash')->__('Sandbox'),
             ),
+            */
             array(
                 'value' => self::ENVIROMENT_MODE_PRODUCTION,
                 'label' => Mage::helper('bcash')->__('Production'),
