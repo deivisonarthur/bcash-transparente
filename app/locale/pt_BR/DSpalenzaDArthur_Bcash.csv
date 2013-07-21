@@ -30,3 +30,5 @@
 "Stop Checkout Order When the Transaction is Canceled by BCash!","Manter o Cliente no Checkout Quando a Transação for Cancelada pelo BCash!"
 "When the customer is checking out an order and BCash cancels it for any reason, this option avoid the order to be placed and keeps the customer in the checkout.","Quando o cliente finaliza o pedido e o BCash cancela a transação por algum motivo, esta opção evita que o pedido seja concluído e mantém o cliente no checkout."
 "Message to be Shown to Customer","Mensagem a ser Mostrada para o Cliente"
+"Your payment was refused. Please try again selecting another payment method.","O pagamento foi recusado. Por favor, tente novamente selecionando outro método de pagamento."
+"Your transaction ID in BCash is: %s.","O ID da sua transação no BCash é: %s."

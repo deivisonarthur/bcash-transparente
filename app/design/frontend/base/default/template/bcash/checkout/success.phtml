@@ -36,6 +36,10 @@
 <?php  else :?>
     <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
 <?php endif;?>
+<?php
+    $order = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
+?>
+    <p><?php echo $this->__('Your transaction ID in BCash is: %s.', $order->getPayment()->getBcashTransactionId())?></p>
     <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
 <?php if ($this->getCanViewOrder() && $this->getCanPrintOrder()) :?>
     <p>
@@ -45,7 +49,6 @@
 <?php endif;?>
 <?php endif;?>
 
-<?php /** Início Alteração Paybras */ ?>
 <?php $session = Mage::getSingleton('checkout/session'); ?>
 <?php $orderId = $this->getOrderId() ? $this->getOrderId() : $session->getOrderId(); ?>
 <?php $order = Mage::getModel('sales/order')->loadByIncrementId($orderId); ?>
@@ -64,7 +67,6 @@
 	<button type="button" class="button" onclick="window.open('<?php echo $session->getUrlRedirect(); ?>')"><img src="<?php echo($this->getSkinUrl('images/paybras/tef.gif')) ?>" /></button><br />
 	</center>
 <?php endif; ?>
-<?php /** Fim Alteração Paybras */?>
 
 <?php if ($this->getAgreementRefId()): ?>
     <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>

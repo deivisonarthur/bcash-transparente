@@ -232,7 +232,11 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard_Data extends DSpalenz
      */
     protected function _preparePayment()
     {
-    	$paymentMethodCode = 37;
+        $config = Mage::getSingleton('bcash/config');
+
+        $cc = $config->getByCode($this->_getPaymentInfo()->getCcType());
+
+    	$paymentMethodCode = $cc['method_code'];
 
     	$this->_data['paymentMethod'] = array(
     		'code' => $paymentMethodCode,

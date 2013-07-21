@@ -108,7 +108,7 @@ class DSpalenzaDArthur_Bcash_Block_Form_Cc extends Mage_Payment_Block_Form_Cc
 	public function getParcelas()
     {
 		$max_parcelas = Mage::getStoreConfig('payment/bcash/parcelas');
-		$valor_minimo = Mage::getStoreConfig('payment/bcash/valor_minimo');
+		$valor_minimo = 1; //Mage::getStoreConfig('payment/bcash/valor_minimo');
 		$parcelas_sem_juros = Mage::getStoreConfig('payment/bcash/parcelas_sem_juros');
 		$taxa_juros = Mage::getStoreConfig('payment/bcash/taxa_juros');
 

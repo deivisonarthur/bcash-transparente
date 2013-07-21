@@ -270,7 +270,7 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
      * if flag isInitializeNeeded set to true
      *
      * @param string $paymentAction
-     * @param object $stateObject
+     * @param Varien_Object $stateObject
      *
      * @return Mage_Payment_Model_Abstract
      */
@@ -280,18 +280,17 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
     }
 
 
+    /**
+     * Makes the real transaction request.
+     * 
+     * @author Tiago Sampaio
+     */
     public function createTransaction()
     {
         $data = Mage::getModel('bcash/payment_method_standard_data')->getDataForTransaction($this->getQuote(), $this->getInfoInstance());
         $result = Mage::getModel('bcash/connection')->createTransaction($data);
-        
-        $payment = $this->getQuote()->getPayment();
-        $payment->setAdditionalInformation(get_object_vars($result));
-        $payment->save();
 
-        Mage::log($result, null, '$result.log');
-
-        if($result->status == '7') {
+        if($result->status == DSpalenzaDArthur_Bcash_Model_Connection::TRANSACTION_STATUS_CANCELED) {
             if($this->_helper()->getConfigFlag('checkout_stop_processing')) {
                 $message = $this->_helper()->getConfigFlag('checkout_stop_processing_message');
 
@@ -303,7 +302,7 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
             }
         }
 
-        Mage::throwException($result->descriptionStatus  . ' - ' . $result->message);
+        $this->getInfoInstance()->setBcashTransactionId($result->transactionId);
     }
 
 

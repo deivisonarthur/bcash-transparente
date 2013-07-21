@@ -9,24 +9,24 @@
         <models>
             <bcash>
                 <class>DSpalenzaDArthur_Bcash_Model</class>
+                <resourceModel>bcash_resource</resourceModel>
             </bcash>
+            <bcash_resource>
+                <class>Mage_Catalog_Model_Resource</class>
+                <entities>
+                    <quote_payment_info>
+                        <table>bcash_sales_flat_quote_payment_info</table>
+                    </quote_payment_info>
+                </entities>
+            </bcash_resource>
         </models>
         <resources>
             <bcash_setup>
                 <setup>
                     <module>DSpalenzaDArthur_Bcash</module>
-                    <class>Mage_Sales_Model_Mysql4_Setup</class>
+                    <class>Mage_Sales_Model_Resource_Setup</class>
                 </setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
             </bcash_setup>
-            <bcash_write>
-                <use>core_write</use>
-            </bcash_write>
-            <bcash_read>
-                <use>core_read</use>
-            </bcash_read>
         </resources>
         <blocks>
             <bcash>
@@ -42,38 +42,67 @@
             <cc>
                 <types>
                     <visa>
+                        <method_code>1</method_code>
                         <code>visa</code>
                         <name>Visa</name>
                         <order>10</order>
                     </visa>
                     <mastercard>
+                        <method_code>2</method_code>
                         <code>mastercard</code>
                         <name>MasterCard</name>
                         <order>20</order>
                     </mastercard>
                     <amex>
+                        <method_code>37</method_code>
                         <code>amex</code>
                         <name>American Express</name>
                         <order>30</order>
                     </amex>
                     <diners>
+                        <method_code>55</method_code>
                         <code>diners</code>
                         <name>Diners Club</name>
                         <order>40</order>
                     </diners>
                     <elo>
+                        <method_code>63</method_code>
                         <code>elo</code>
                         <name>ELO</name>
                         <order>50</order>
                     </elo>
+                    <hipercard>
+                        <method_code>56</method_code>
+                        <code>hipercard</code>
+                        <name>Hipercard</name>
+                        <order>60</order>
+                    </hipercard>
+                    <aura>
+                        <method_code>45</method_code>
+                        <code>aura</code>
+                        <name>Aura</name>
+                        <order>70</order>
+                    </aura>
                     <simulacao>
                         <code>simulacao</code>
                         <name>Simulacao</name>
-                        <order>60</order>
+                        <order>80</order>
                     </simulacao>
                 </types>
             </cc>
         </bcash>
+        <fieldsets>
+            <sales_convert_quote_payment>
+                <bcash_transaction_id>
+                    <to_order_payment>*</to_order_payment>
+                </bcash_transaction_id>
+            </sales_convert_quote_payment>
+            <sales_convert_order_payment>
+                <bcash_transaction_id>
+                    <to_quote_payment>*</to_quote_payment>
+                </bcash_transaction_id>
+            </sales_convert_order_payment>
+        </fieldsets>
     </global>
     <frontend>
         <translate>

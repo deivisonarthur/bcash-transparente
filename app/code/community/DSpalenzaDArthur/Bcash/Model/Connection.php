@@ -97,8 +97,9 @@ class DSpalenzaDArthur_Bcash_Model_Connection extends DSpalenzaDArthur_Bcash_Mod
 
 	/**
 	 * BCash: “Cancelada” = Transação cancelada
+	 * @comment: In integration manual it's 5
 	 */
-	const TRANSACTION_STATUS_CANCELED 	= '5';
+	const TRANSACTION_STATUS_CANCELED 	= '7';
 
 
 

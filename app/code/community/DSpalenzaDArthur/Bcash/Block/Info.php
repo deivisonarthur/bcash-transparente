@@ -9,26 +9,12 @@
  */
 class DSpalenzaDArthur_Bcash_Block_Info extends Mage_Payment_Block_Info_Ccsave
 {
+
     protected function _construct()
     {
         parent::_construct();
         $this->setTemplate('bcash/info.phtml');
     }
-    
-    //protected function _prepareSpecificInformation($transport = null)
-//    {
-//        if (null !== $this->_paymentSpecificInformation) {
-//            return $this->_paymentSpecificInformation;
-//        }
-//        $info = $this->getInfo();
-//        $transport = new Varien_Object();
-//        $transport = parent::_prepareSpecificInformation($transport);
-//        $transport->addData(array(
-//            Mage::helper('payment')->__('Check No#') => $info->getCheckNo(),
-//            Mage::helper('payment')->__('Check Date') => $info->getCheckDate()
-//        ));
-//        return $transport;
-//    }
 
 
 	/**
@@ -38,7 +24,6 @@ class DSpalenzaDArthur_Bcash_Block_Info extends Mage_Payment_Block_Info_Ccsave
      */
     public function getOrder() {
         $order = Mage::registry('current_order');
-		$info = $this->getInfo();
 
 		if (!$order) {
 			if ($this->getInfo() instanceof Mage_Sales_Model_Order_Payment) {
@@ -56,19 +41,19 @@ class DSpalenzaDArthur_Bcash_Block_Info extends Mage_Payment_Block_Info_Ccsave
     
 
     /**
-     * Recupera ID da transação junto a Paybras
+     * Retrieve the BCash Transaction ID stored in Payment Object
      * 
      * @return string
      */
-    public function returnTransaction()
+    public function getTransactionId()
     {
         $order = $this->getOrder();
 
-        if(isset($order) && $order->getId()) {
-            return $order->getPayment()->getPaybrasTransactionId() ? $order->getPayment()->getPaybrasTransactionId() : $this->getInfo()->getPaybrasTransactionId();
-        } else {
-            return null;
+        if($order && $order->getId()) {
+            return $this->getOrder()->getPayment()->getBcashTransactionId();
         }
+
+        return;
     }
     
 
@@ -84,7 +69,6 @@ class DSpalenzaDArthur_Bcash_Block_Info extends Mage_Payment_Block_Info_Ccsave
             return Mage::getSingleton('checkout/session')->getUrlRedirect();
         } elseif(isset($order)) {
             $payment = $order->getPayment();
-            //Mage::log('URL DO PAYMENT: ' . $payment->getPaybrasTransactionId());
             return $payment->getPaybrasOrderId();
         } else {
             return NULL;
@@ -116,8 +100,6 @@ class DSpalenzaDArthur_Bcash_Block_Info extends Mage_Payment_Block_Info_Ccsave
         if ($paymentMethod == 'boleto' && ($order->getState() == Mage_Sales_Model_Order::STATE_HOLDED || $order->getState() == Mage_Sales_Model_Order::STATE_PENDING_PAYMENT)) {
             $paymentMethod .= ' (<a href="' . $url_redirect . '" onclick="this.target=\'_blank\'">Página do BB - TEF</a>)';
         }
-        
-        Mage::log('Payment Method INfo: '.$paymentMethod);
         
         $this->addData(array(
             'show_paylink' => (boolean) !$transactionId && $order->getState() == Mage_Sales_Model_Order::STATE_NEW,

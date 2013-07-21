@@ -37,6 +37,10 @@ class DSpalenzaDArthur_Bcash_Model_Credentials extends DSpalenzaDArthur_Bcash_Mo
 	protected $_sellerEmail 	= null;
 
 
+	/**
+	 * Constructs the necessary data for model
+	 * 
+	 */
 	protected function _construct()
 	{
 		$this->_consumerKey 	= $this->_getConfig('consumer_key');
@@ -50,8 +54,6 @@ class DSpalenzaDArthur_Bcash_Model_Credentials extends DSpalenzaDArthur_Bcash_Mo
 		);
 
 		$this->setData($data);
-
-		Mage::log($this->debug(), null, '$credentials.log');
 	}
 
 
