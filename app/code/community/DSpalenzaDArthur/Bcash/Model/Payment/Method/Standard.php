@@ -288,10 +288,15 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard extends Mage_Payment_
     public function createTransaction()
     {
         $data = Mage::getModel('bcash/payment_method_standard_data')->getDataForTransaction($this->getQuote(), $this->getInfoInstance());
+
+        Mage::log(json_decode($data), null, '$data.log');
+
         $result = Mage::getModel('bcash/connection')->createTransaction($data);
 
-        if($result->status == DSpalenzaDArthur_Bcash_Model_Connection::TRANSACTION_STATUS_CANCELED) {
-            if($this->_helper()->getConfigFlag('checkout_stop_processing')) {
+        if($this->_helper()->getConfigFlag('checkout_stop_processing')) {
+            if(!$this->_helper()->getConfigFlag('checkout_stop_processing_use_default_message')) {
+                Mage::throwException($result->message);
+            } elseif ($result->status == DSpalenzaDArthur_Bcash_Model_Connection::TRANSACTION_STATUS_CANCELED) {
                 $message = $this->_helper()->getConfigFlag('checkout_stop_processing_message');
 
                 if(!$message) {

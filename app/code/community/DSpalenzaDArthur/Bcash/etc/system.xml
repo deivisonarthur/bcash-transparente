@@ -141,9 +141,10 @@
                             <show_in_store>1</show_in_store>
                             <comment>When the customer is checking out an order and BCash cancels it for any reason, this option avoid the order to be placed and keeps the customer in the checkout.</comment>
                         </checkout_stop_processing>
-                        <checkout_stop_processing_message translate="label">
-                            <label>Message to be Shown to Customer</label>
-                            <frontend_type>textarea</frontend_type>
+                        <checkout_stop_processing_use_default_message translate="label">
+                            <label>Use Default Message</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -151,7 +152,164 @@
                             <depends>
                                 <checkout_stop_processing>1</checkout_stop_processing>
                             </depends>
+                        </checkout_stop_processing_use_default_message>
+                        <checkout_stop_processing_message translate="label">
+                            <label>Message to be Shown to Customer</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <checkout_stop_processing_use_default_message>1</checkout_stop_processing_use_default_message>
+                            </depends>
                         </checkout_stop_processing_message>
+    
+
+                        <address_format translate="label,comment">
+                            <label>Address Format</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_address_format</source_model>
+                            <sort_order>180</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comments>What's the format the addresses are being stored in your store?</comments>
+                        </address_format>
+                        <!-- Multiline -->
+                        <address_format_multiline_street translate="label,comment">
+                            <label>Line for Street</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_address_format_multiline</source_model>
+                            <sort_order>190</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comments>What's is the line for street?</comments>
+                            <depends>
+                                <address_format>multiline</address_format>
+                            </depends>
+                        </address_format_multiline_street>
+                        <address_format_multiline_number translate="label,comment">
+                            <label>Line for Street Number</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_address_format_multiline</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comments>What's is the line for street number?</comments>
+                            <depends>
+                                <address_format>multiline</address_format>
+                            </depends>
+                        </address_format_multiline_number>
+                        <address_format_multiline_neighborhood translate="label,comment">
+                            <label>Line for Neighborhood</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_address_format_multiline</source_model>
+                            <sort_order>210</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comments>What's is the line for neighborhood?</comments>
+                            <depends>
+                                <address_format>multiline</address_format>
+                            </depends>
+                        </address_format_multiline_neighborhood>
+                        <address_format_multiline_complement translate="label,comment">
+                            <label>Line for Complement</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_address_format_multiline</source_model>
+                            <sort_order>220</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comments>What's is the line for complement?</comments>
+                            <depends>
+                                <address_format>multiline</address_format>
+                            </depends>
+                        </address_format_multiline_complement>
+                        <!-- Attribute -->
+                        <address_format_attribute_street translate="label,comment">
+                            <label>Address Attribute for Street</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_attribute_customer_address</source_model>
+                            <sort_order>190</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comments>What's is the Address Attribute for street?</comments>
+                            <depends>
+                                <address_format>attributes</address_format>
+                            </depends>
+                        </address_format_attribute_street>
+                        <address_format_attribute_number translate="label,comment">
+                            <label>Address Attribute for Street Number</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_attribute_customer_address</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comments>What's is the Address Attribute for street number?</comments>
+                            <depends>
+                                <address_format>attributes</address_format>
+                            </depends>
+                        </address_format_attribute_number>
+                        <address_format_attribute_neighborhood translate="label,comment">
+                            <label>Address Attribute for Neighborhood</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_attribute_customer_address</source_model>
+                            <sort_order>210</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comments>What's is the Address Attribute for neighborhood?</comments>
+                            <depends>
+                                <address_format>attributes</address_format>
+                            </depends>
+                        </address_format_attribute_neighborhood>
+                        <address_format_attribute_complement translate="label,comment">
+                            <label>Address Attribute for Complement</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_attribute_customer_address</source_model>
+                            <sort_order>220</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comments>What's is the Address Attribute for complement?</comments>
+                            <depends>
+                                <address_format>attributes</address_format>
+                            </depends>
+                        </address_format_attribute_complement>
+
+
+                        <request_send_customer_id translate="label">
+                            <label>Send Customer ID in Request</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <checkout_stop_processing>1</checkout_stop_processing>
+                            </depends>
+                        </request_send_customer_id>
+                        <request_send_customer_id_field translate="label">
+                            <label>Customer ID Attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>bcash/system_config_source_attribute_customer</source_model>
+                            <sort_order>310</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <request_send_customer_id>1</request_send_customer_id>
+                            </depends>
+                        </request_send_customer_id_field>
+
+
                     </fields>
                 </bcash>
             </groups>
