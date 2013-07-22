@@ -27,19 +27,23 @@
 class DSpalenzaDArthur_Bcash_Model_System_Config_Source_Address_Format extends DSpalenzaDArthur_Bcash_Model_Abstract
 {
 
+    const ADDRESS_FORMAT_SINGLELINE = 'singleline';
+    const ADDRESS_FORMAT_MULTILINE  = 'multiline';
+    const ADDRESS_FORMAT_ATTRIBUTES = 'attributes';
+
     public function toOptionArray()
     {
 		$data = array(
             array(
-                'value' => 'singleline',
+                'value' => self::ADDRESS_FORMAT_SINGLELINE,
                 'label' => $this->_helper()->__('Single Line'),
             ),
             array(
-                'value' => 'multiline',
+                'value' => self::ADDRESS_FORMAT_MULTILINE,
                 'label' => $this->_helper()->__('Multi Line'),
             ),
             array(
-                'value' => 'attributes',
+                'value' => self::ADDRESS_FORMAT_ATTRIBUTES,
                 'label' => $this->_helper()->__('Separated by Attributes'),
             ),
         );

@@ -184,12 +184,51 @@ class DSpalenzaDArthur_Bcash_Model_Payment_Method_Standard_Data extends DSpalenz
     {
     	$customer = $this->_getQuote()->getCustomer();
 
+        $address = array();
+
+        $quoteAddress = $this->_getQuoteAddress();
+
+        switch($this->_getConfig('address_format')) {
+            case DSpalenzaDArthur_Bcash_Model_System_Config_Source_Address_Format::ADDRESS_FORMAT_MULTILINE:
+                $streetLine = $quoteAddress->getStreet();
+
+                $address['street']          = $streetLine[(int) $this->_getConfig('address_format_multiline_street')];
+                $address['number']          = $streetLine[(int) $this->_getConfig('address_format_multiline_number')];
+                $address['neighborhood']    = $streetLine[(int) $this->_getConfig('address_format_multiline_neighborhood')];
+                $address['complement']      = $streetLine[(int) $this->_getConfig('address_format_multiline_complement')];
+
+                break;
+            case DSpalenzaDArthur_Bcash_Model_System_Config_Source_Address_Format::ADDRESS_FORMAT_ATTRIBUTES:
+
+                $address['street']          = $quoteAddress->getData($this->_getConfig('address_format_attribute_street'));
+                $address['number']          = $quoteAddress->getData($this->_getConfig('address_format_attribute_number'));
+                $address['neighborhood']    = $quoteAddress->getData($this->_getConfig('address_format_attribute_neighborhood'));
+                $address['complement']      = $quoteAddress->getData($this->_getConfig('address_format_attribute_complement'));
+
+                break;
+            case DSpalenzaDArthur_Bcash_Model_System_Config_Source_Address_Format::ADDRESS_FORMAT_SINGLELINE:
+            default:
+
+                /**
+                 * @todo Refactory for this case
+                 * 
+                 */
+                $streetLine = $quoteAddress->getStreet();
+
+                $address['street']          = $streetLine[0];
+                $address['number']          = $streetLine[1];
+                $address['neighborhood']    = $streetLine[2];
+                $address['complement']      = $streetLine[3];
+                
+                break;
+        }
+
     	$this->_data['buyer'] = array(
     		'address' => Array (
-                'address' 		=> $this->_getQuoteAddress()->getStreet()[0],
-                'number' 		=> $this->_getQuoteAddress()->getStreet()[1],
-                'neighborhood' 	=> $this->_getQuoteAddress()->getStreet()[2],
-                'complement' 	=> $this->_getQuoteAddress()->getStreet()[3],
+                'address' 		=> $address['street'],
+                'number' 		=> $address['number'],
+                'neighborhood' 	=> $address['neighborhood'],
+                'complement' 	=> $address['complement'],
                 'city' 			=> $this->_getQuoteAddress()->getCity(),
                 'state' 		=> $this->_helper()->getRegionCode($this->_getQuoteAddress()->getRegion()),
                 'zipCode' 		=> $this->_helper()->onlyNumbers($this->_getQuoteAddress()->getPostcode()),

@@ -31,19 +31,19 @@ class DSpalenzaDArthur_Bcash_Model_System_Config_Source_Address_Format_Multiline
     {
 		$data = array(
             array(
-                'value' => 1,
+                'value' => 0,
                 'label' => $this->_helper()->__('1st Line'),
             ),
             array(
-                'value' => 2,
+                'value' => 1,
                 'label' => $this->_helper()->__('2nd Line'),
             ),
             array(
-                'value' => 3,
+                'value' => 2,
                 'label' => $this->_helper()->__('3th Line'),
             ),
             array(
-                'value' => 4,
+                'value' => 3,
                 'label' => $this->_helper()->__('4th Line'),
             ),
         );

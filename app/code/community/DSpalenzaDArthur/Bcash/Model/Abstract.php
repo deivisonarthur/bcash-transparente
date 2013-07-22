@@ -55,4 +55,21 @@ abstract class DSpalenzaDArthur_Bcash_Model_Abstract extends Mage_Core_Model_Abs
     	return;
     }
 
+
+    /**
+     * Get any configuration flag of the module
+     * 
+     * @param string $field
+     * 
+     * @return string
+     */
+    protected function _getConfigFlag($field = null)
+    {
+        if(!is_null($field)) {
+            return $this->_helper()->getConfigFlag($field);
+        }
+
+        return;
+    }
+
 }

@@ -160,6 +160,12 @@
                 <transaction_url>https://api.bcash.com.br/service/createTransaction/</transaction_url>
                 <transaction_url_type>json</transaction_url_type>
                 <checkout_stop_processing>0</checkout_stop_processing>
+                <checkout_stop_processing_use_default_message>0</checkout_stop_processing_use_default_message>
+                <address_format>multiline</address_format>
+                <address_format_multiline_street>1</address_format_multiline_street>
+                <address_format_multiline_number>2</address_format_multiline_number>
+                <address_format_multiline_neighborhood>3</address_format_multiline_neighborhood>
+                <address_format_multiline_complement>4<address_format_multiline_complement>
                 <debug>1</debug>
             </bcash>
         </payment>
