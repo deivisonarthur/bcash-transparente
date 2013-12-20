@@ -40,3 +40,5 @@ http://roysimkes.net/blog/2009/11/creating-your-own-payment-gateway-for-magento-
 Artigo - Using Zend Oauth to Connect to Twitter (Through Magento)
 ----------------------
 http://www.crearegroup-ecommerce.co.uk/blog/magento-tutorials/using-zend-oauth-to-connect-to-twitter-through-magento.php
+
+hackathon do Business::CPI - Perl Mongers
